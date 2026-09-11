@@ -1,55 +1,122 @@
-_Support this and all my katas via [Patreon](https://www.patreon.com/EmilyBache)_
-
 # Gilded Rose Refactoring Kata
 
-You can find out more about this exercise in my YouTube video [Why Developers LOVE The Gilded Rose Kata](https://youtu.be/Mt4XpGxigT4). I also have a video of a worked solution in Java - [Gilded Rose Kata, Hands-on](https://youtu.be/OdnV8hc9L7I)
+This repository is my implementation of the [Gilded Rose Refactoring Kata](https://github.com/emilybache/GildedRose-Refactoring-Kata).
 
-I use this kata as part of my work as a technical coach. I wrote a lot about the coaching method I use in this book [Technical Agile Coaching with the Samman method](https://leanpub.com/techagilecoach). A while back I wrote this article ["Writing Good Tests for the Gilded Rose Kata"](http://coding-is-like-cooking.info/2013/03/writing-good-tests-for-the-gilded-rose-kata/) about how you could use this kata in a [coding dojo](https://leanpub.com/codingdojohandbook).
+The exercise consists of refactoring the existing Gilded Rose inventory logic while preserving its current behaviour and adding support for **Conjured items**, which degrade in Quality twice as fast as normal items.
 
+## Scope
 
-## How to use this Kata
+This repository is a fork of the original kata, which contains implementations in many programming languages.
 
-The simplest way is to just clone the code and start hacking away improving the design. You'll want to look at the ["Gilded Rose Requirements"](https://github.com/emilybache/GildedRose-Refactoring-Kata/blob/main/GildedRoseRequirements.md) which explains what the code is for. I strongly advise you that you'll also need some tests if you want to make sure you don't break the code while you refactor.
+**This submission uses TypeScript only.** The implementation and unit tests relevant to this exercise are located in:
 
-You could write some unit tests yourself, using the requirements to identify suitable test cases. I've provided a failing unit test in a popular test framework as a starting point for most languages.
+```text
+TypeScript/
+├── app/gilded-rose.ts
+└── test/jest/gilded-rose.spec.ts
+```
 
-Alternatively, use the Approval tests provided in this repository. (Read more about that in the section "Text-based Approval Testing").
+The other language directories are unchanged from the upstream repository and are intentionally retained to preserve the original fork structure.
 
-The idea of the exercise is to do some deliberate practice, and improve your skills at designing test cases and refactoring. The idea is not to re-write the code from scratch, but rather to practice taking small steps, running the tests often, and incrementally improving the design. 
+The TextTest configuration has also been updated to run against the TypeScript implementation.
 
-### Gilded Rose Requirements in other languages 
+## Requirements
 
-- [English](GildedRoseRequirements.md)
-- [Español](GildedRoseRequirements_es.md)
-- [Français](GildedRoseRequirements_fr.md)
-- [Italiano](GildedRoseRequirements_it.md)
-- [日本語](GildedRoseRequirements_jp.md)
-- [Português](GildedRoseRequirements_pt-BR.md)
-- [Русский](GildedRoseRequirements_ru.md)
-- [Українська](GildedRoseRequirements_ua.md)
-- [ไทย](GildedRoseRequirements_th.md)
-- [中文](GildedRoseRequirements_zh.txt)
-- [한국어](GildedRoseRequirements_kr.md)
-- [German](GildedRoseRequirements_de.md)
-- [Euskara](GildedRoseRequirements_eu.md)
-- [Galego](GildedRoseRequirements_gl.md)
+To run the TypeScript implementation and unit tests:
 
-## Text-Based Approval Testing
+* Node.js
+* npm
 
-Most language versions of this code have a [TextTest](https://texttest.org) fixture for Approval testing. For information about this, see the [TextTests README](https://github.com/emilybache/GildedRose-Refactoring-Kata/tree/main/texttests)
+To run the TextTest approval tests:
 
-## History of the exercise
+* Python 3
 
-This Kata was originally created by Terry Hughes (http://twitter.com/TerryHughes). It is already on GitHub [here](https://github.com/NotMyself/GildedRose). Bobby Johnson described the kata in an article titled "Refactor This: The Gilded Rose Kata", but unfortunately it is no longer on the internet. I found it on the Wayback Machine [here](https://web.archive.org/web/20240525015111/https://iamnotmyself.com/refactor-this-the-gilded-rose-kata/).
+## Install
 
-I translated the original C# into a few other languages, (with a little help from my friends!), and slightly changed the starting position. This means I've actually done a small amount of refactoring already compared with the original form of the kata, and made it easier to get going with writing tests by giving you one failing unit test to start with. I also added test fixtures for Text-Based approval testing with TextTest (see [the TextTests](https://github.com/emilybache/GildedRose-Refactoring-Kata/tree/main/texttests))
+Clone the repository:
 
-As Bobby Johnson points out in his article "Why Most Solutions to Gilded Rose Miss The Bigger Picture" (on the Wayback Machine [here](https://web.archive.org/web/20230530152324/https://iamnotmyself.com/why-most-solutions-to-gilded-rose-miss-the-bigger-picture/)), it'll actually give you
-better practice at handling a legacy code situation if you do this Kata in the original C#. However, I think this kata
-is also really useful for practicing writing good tests using different frameworks and approaches, and the small changes I've made help with that. I think it's also interesting to compare what the refactored code and tests look like in different programming languages.
+```bash
+git clone https://github.com/rkeshmir/GildedRose-Refactoring-Kata.git
+cd GildedRose-Refactoring-Kata
+```
 
-## Contributing
+Install the TypeScript dependencies:
 
-I have been struggling for some time with the maintenance burden for the Gilded Rose respository. I get frequent spurious pull requests from people who have been assigned to work on it as an exercise by some other organization (I don't know who) and mistakenly send me a pull request with their solution. I get so many of these it's a significant amount of work to check that they aren't a legitimate contribution. It's really annoying. I have sadly now added a restriction now so that only prior contributors can now open issues, comment, or create pull requests.
+```bash
+cd TypeScript
+npm install
+```
 
-If you would like to make an actual contribution that improves the starting position of the exercise, please see [CONTRIBUTING.md](./CONTRIBUTING.md) for some ideas about how to get involved.
+## Run the unit tests
+
+From the `TypeScript` directory:
+
+```bash
+npm run test:jest
+```
+
+To run Jest in watch mode:
+
+```bash
+npm run test:jest:watch
+```
+
+## Compile the TypeScript project
+
+From the `TypeScript` directory:
+
+```bash
+npm run compile
+```
+
+## Run the TextTest approval tests
+
+TextTest is used as an additional safety net to verify the behaviour of the inventory system.
+
+From the repository root:
+
+```bash
+./start_texttest.sh
+```
+
+The script creates a Python virtual environment when needed, installs TextTest, and launches the configured approval tests.
+
+The TextTest configuration is set to execute the **TypeScript** implementation.
+
+### macOS note
+
+The current TextTest configuration uses the macOS `opendiff` utility to display graphical differences.
+
+If you run the repository on another operating system and need to inspect a failing TextTest result, you may need to change the configured diff tool in:
+
+```text
+texttests/config.gr
+```
+
+## Implementation
+
+The main implementation is:
+
+```text
+TypeScript/app/gilded-rose.ts
+```
+
+The refactored solution separates the Quality-update behaviour by item category and uses a strategy resolver to select the appropriate update behaviour for:
+
+* normal items
+* Aged Brie
+* Sulfuras
+* Backstage passes
+* Conjured items
+
+## Tests
+
+The Jest unit tests are located in:
+
+```text
+TypeScript/test/jest/gilded-rose.spec.ts
+```
+
+They cover the existing Gilded Rose behaviour as well as the new Conjured-item requirement.
+
+For the original exercise requirements, see [GildedRoseRequirements.md](./GildedRoseRequirements.md).
