@@ -18,52 +18,72 @@ export class GildedRose {
   }
 
   updateQuality() {
-    for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (this.items[i].quality > 0) {
-          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-            this.items[i].quality = this.items[i].quality - 1
-          }
-        }
-      } else {
-        if (this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1
-          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1
-              }
-            }
-            if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1
-              }
-            }
-          }
-        }
+
+    this.items.forEach(item => {
+      if (!item.name.startsWith('Sulfuras')) {
+        item.sellIn--;
       }
-      if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-        this.items[i].sellIn = this.items[i].sellIn - 1;
-      }
-      if (this.items[i].sellIn < 0) {
-        if (this.items[i].name != 'Aged Brie') {
-          if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].quality > 0) {
-              if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                this.items[i].quality = this.items[i].quality - 1
-              }
-            }
-          } else {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality
-          }
-        } else {
-          if (this.items[i].quality < 50) {
-            this.items[i].quality = this.items[i].quality + 1
-          }
-        }
-      }
-    }
+      getUpdateMethod(item)(item);
+    })
 
     return this.items;
   }
+}
+
+const MIN_QUALITY = 0;
+const MAX_QUALITY = 50;
+
+const basicUpdateMethod = (item: Item, acceleration = 1) => {
+  item.quality = Math.max(MIN_QUALITY, item.quality - (item.sellIn < 0 ? 2 * acceleration :  acceleration));
+}
+
+const conjuredUpdateMethod = (item: Item) => {
+  basicUpdateMethod(item, 2);
+}
+
+const improvingUpdateMethod = (item: Item) => {
+
+  item.quality = Math.min(
+    MAX_QUALITY,
+    item.quality + (item.sellIn < 0 ? 2 : 1)
+  );
+}
+
+const BACKSTAGE_PASS_DOUBLE_QUALITY_THRESHOLD = 10;
+const BACKSTAGE_PASS_TRIPLE_QUALITY_THRESHOLD = 5;
+const backStageUpdateMethod = (item: Item) => {
+
+  if (item.sellIn < 0) {
+    item.quality = MIN_QUALITY;
+    return;
+  }
+
+  item.quality = Math.min(
+    MAX_QUALITY,
+    item.quality + (
+      item.sellIn >= BACKSTAGE_PASS_DOUBLE_QUALITY_THRESHOLD ?
+        1 : item.sellIn >= BACKSTAGE_PASS_TRIPLE_QUALITY_THRESHOLD ?
+          2 : 3
+    )
+  );
+}
+
+const legendaryUpdateMethod = () => {};
+
+type QualityUpdater = (item: Item) => void;
+
+const getUpdateMethod: (item: Item) => QualityUpdater = (item: Item) => {
+  if (item.name.startsWith('Sulfuras')) {
+    return legendaryUpdateMethod;
+  }
+  if (item.name.startsWith('Conjured')) {
+    return conjuredUpdateMethod;
+  }
+  if (item.name === 'Aged Brie') {
+    return improvingUpdateMethod;
+  }
+  if (item.name.startsWith('Backstage passes')) {
+    return backStageUpdateMethod;
+  }
+  return basicUpdateMethod
 }
