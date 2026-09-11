@@ -2,9 +2,11 @@
 
 This is the Gilded Rose kata in TypeScript.
 
+This implementation refactors the existing inventory logic and adds support for **Conjured items**, which degrade in Quality twice as fast as normal items.
+
 ## Getting started
 
-Install dependencies
+Install dependencies:
 
 ```sh
 npm install
@@ -12,46 +14,48 @@ npm install
 
 ## Run the unit tests from the Command-Line
 
-There are two unit test frameworks to choose from, Jest and Mocha.
+Jest is used for the unit tests:
 
 ```sh
 npm run test:jest
 ```
 
-To run all tests in watch mode
+To run the tests in watch mode:
 
 ```sh
 npm run test:jest:watch
 ```
 
-Mocha
+## Compile the project
 
 ```sh
-npm run test:mocha
+npm run compile
 ```
-
 
 ## Run the TextTest fixture from the Command-Line
 
-_You may need to install `ts-node`_
+From the repository root:
 
 ```sh
-npx ts-node test/golden-master-text-test.ts
+./start_texttest.sh
 ```
 
-Or with number of days as args:
-```sh
-npx ts-node test/golden-master-text-test.ts 10
+The TextTest configuration is already set to use the TypeScript implementation.
+
+On macOS, `opendiff` is configured as the graphical diff tool.
+
+## Implementation
+
+The main implementation is located in:
+
+```text
+app/gilded-rose.ts
 ```
 
-You should make sure the command shown above works when you execute it in a terminal before trying to use TextTest (see below).
+The Jest unit tests are located in:
 
+```text
+test/jest/gilded-rose.spec.ts
+```
 
-## Run the TextTest approval test that comes with this project
-
-There are instructions in the [TextTest Readme](../texttests/README.md) for setting up TextTest. You will need to specify the Python executable and interpreter in [config.gr](../texttests/config.gr). Uncomment these lines:
-
-    executable:${TEXTTEST_HOME}/python/texttest_fixture.py
-    interpreter:python
-
-
+The refactoring separates the update behaviour by item category and uses a strategy resolver to select the correct Quality update logic.
